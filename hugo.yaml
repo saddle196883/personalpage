@@ -69,7 +69,7 @@ params:
   homeInfoParams:
     Title: "Hello there!"
     Content: |
-      Hello! My name is Timothy (but my friends usually call me Timo) and I am a senior undergraduate mathematics major in the National University of Singapore (NUS). As I am beginning my PhD studies in NUS in the coming fall semester, I have decided to set up a personal page, to serve as a way to introduce myself and my work to others, as well as to have a place to write my ideas.  
+      Hello! My name is Timothy (but my friends usually call me Timo) and I am a PhD student in mathematics at the National University of Singapore (NUS). As I was beginning my PhD studies in NUS, I had decided to set up a personal page, to serve as a way to introduce myself and my work to others, as well as to have a place to write my ideas.  
 
       This webpage is a work in progress! There are many things that I want to do, but I am not familiar enough with Hugo (the content management system) or the theme to implement them immediately.  For example, I am trying to set up a comment system with utterances, and I would like to tweak the colours a little.
 
