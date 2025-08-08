@@ -6,6 +6,8 @@
   </url><url>
     <loc>http://localhost:1313/personalpage/categories/</loc>
   </url><url>
+    <loc>http://localhost:1313/personalpage/friends-links/</loc>
+  </url><url>
     <loc>http://localhost:1313/personalpage/tags/</loc>
   </url><url>
     <loc>http://localhost:1313/personalpage/</loc>

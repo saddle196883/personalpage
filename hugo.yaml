@@ -116,6 +116,10 @@ menu:
       name: About Me
       url: /aboutme/
       weight: 10
+    - identifier: Friends' Links
+      name: Friends' Links
+      url: /friends-links/
+      weight: 10
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
