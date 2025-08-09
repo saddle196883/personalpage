@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/personalpage/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=personalpage/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>A Simple Randomized Matrix Multiplication Algorithm | Unsalvageable Proofs</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+千里之行，始於足下。
+[The journey of a thousand miles begins with a simple step.]
+&ndash; Lao Tzu
+Introduction
+We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.
+Obviously, I don&rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:">
+<meta name="author" content="Me">
+<link rel="canonical" href="http://localhost:1313/personalpage/posts/simple-rand-matmult/">
+<meta name="google-site-verification" content="XYZabc">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/personalpage/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/personalpage/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/personalpage/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/personalpage/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/personalpage/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/personalpage/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/personalpage/posts/simple-rand-matmult/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+<meta property="og:url" content="http://localhost:1313/personalpage/posts/simple-rand-matmult/">
+  <meta property="og:site_name" content="Unsalvageable Proofs">
+  <meta property="og:title" content="A Simple Randomized Matrix Multiplication Algorithm">
+  <meta property="og:description" content=" 千里之行，始於足下。
+[The journey of a thousand miles begins with a simple step.]
+– Lao Tzu
+Introduction We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.
+Obviously, I don’t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-09T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-09T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Simple Randomized Matrix Multiplication Algorithm">
+<meta name="twitter:description" content="
+千里之行，始於足下。
+[The journey of a thousand miles begins with a simple step.]
+&ndash; Lao Tzu
+Introduction
+We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.
+Obviously, I don&rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/personalpage/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "A Simple Randomized Matrix Multiplication Algorithm",
+      "item": "http://localhost:1313/personalpage/posts/simple-rand-matmult/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Simple Randomized Matrix Multiplication Algorithm",
+  "name": "A Simple Randomized Matrix Multiplication Algorithm",
+  "description": " 千里之行，始於足下。\n[The journey of a thousand miles begins with a simple step.]\n\u0026ndash; Lao Tzu\nIntroduction We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.\nObviously, I don\u0026rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " 千里之行，始於足下。\n[The journey of a thousand miles begins with a simple step.]\n– Lao Tzu\nIntroduction We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.\nObviously, I don’t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:\nInitialize an $n\\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$. For $i=1,\\dots,n$, For $j=1,\\dots,n$, For $k=1,…,n$, $c_{ij} \\mathrel{+}= a_{ik}b_{kj}$. Return $C$. Naturally, because of the triple for-loop in the algorithm, this runs in $\\mathcal{O}(n^3)$ time. Depending on your need for speed, this can be considered abysmally slow. For many years, people could not come up with faster ways to multiply matrices, but Volker Strassen published his algorithm with a runtime of $\\mathcal{O}(n^{\\log_2 7})$ in 1969, and demonstrated that the $\\mathcal{O}(n^3)$ barrier could indeed be broken. Nowadays, several more faster algorithms have been discovered, with the best bound (as of writing) being $\\mathcal{O}(n^{2.371339})$.\nBut what if this is not enough? What if we wanted faster?\nGenerally speaking, one can judge an algorithm in three ways: speed, simplicity, and correctness. Unfortunately, oftentimes these three goals stand in contradiction to each other. Here, we need more speed, and people have already racked their brains hard and came up with the most complicated fast algorithms for matrix multiplication. What we will do today is sacrifice a little correctness. More precisely, we will introduce some randomization into the picture, and only ask that our algorithm returns something (quantifiably) close to the right answer most of the time.\nThe Idea Of course, we all know how to multiply matrices, so observe that\n$$ AB = \\left(\\sum_{k=1}^n a_{ik}b_{kj}\\right)_{i,j=1}^n = \\sum_{k=1}^n\\left(a_{ik}b_{kj}\\right)_{i,j=1}^n. $$ The right-hand side is a product of rank-one matrices. The idea is that we could randomly sample the rank-one matrices (essentially, we are randomly sampling $k$ from $1,\\dots,n$) and sum them up. Evaluating each rank-one matrix takes $\\mathcal{O}(n^2)$ time, so if we can show that we do not have to sample too many times, we will have a fast algorithm. Therefore, we will consider the following algorithm template.\nInputs: the sample size $S\\in\\mathbb{Z}_{\u003e0}$, and probabilities $p_1,…,p_n\u003e0$ summing to $1$.\nInitialize an $n\\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$. Repeat $S$ times: Pick a random $k\\in{1,\\dots,n}$ with probability $p_k$. For $i=1,\\dots,n$, For $j=1,…,n$, $c_{ij} \\mathrel{+}= \\frac{1}{p_i} a_{ik}b_{kj}$. Return $D := \\frac{1}{S}C$. Naturally, one has to pick the $p_k$ so that the algorithm works. But by magic, the choice of $p_k$ does not matter in the following sense:\nLemma. Regardless of the choice of $p_k$, one has $\\mathbb{E}[D] = AB$.\nIn English, this means that $D$ is always an unbiased estimator of $AB$.\nProof. We let $k_m$ be the $m$‘th sample of $k$, so that\n$$ \\begin{align*} D=\\frac{1}{S}\\sum_{m=1}^S\\frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n. \\end{align*} $$\nBy linearity of expectation, one then gets\n$$ \\begin{align*} \\mathbb{E}[D] \u0026=\\frac{1}{S}\\sum_{m=1}^S\\mathbb{E}\\left[\\frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n\\right] \\\\ \u0026=\\frac{1}{S}\\sum_{m=1}^S\\sum_{k=1}^n p_k \\frac{1}{p_{k}}(a_{ik}b_{kj})_{i,j=1}^n \\\\ \u0026=\\frac{1}{S}\\sum_{m=1}^S\\sum_{k=1}^n (a_{ik}b_{kj})_{i,j=1}^n \\\\ \u0026=\\frac{1}{S}\\sum_{m=1}^S AB \\\\ \u0026= AB. \\end{align*} $$\nSo our algorithm technically works. Unfortunately, works is not enough: the variance of the outputs could be absurdly high, such that most of the answers are way off from the correct answer. The next thing to do is to control this variance. This means we got to control $D-AB$, which also means we have to impose a notion of size onto $D-AB$. Our choice is to use the Frobenius norm:\n$$ \\|A\\|_{F} = \\sqrt{\\sum_{i,j=1}^n |a_{ij}|^2}. $$\nOne has, by the independence of the $k_m$, that $$ \\begin{align*} \\mathbb{E}[\\|D-AB\\|_F^2] \u0026= \\sum_{i,j=1}^n \\mathbb{E}\\left[\\left(\\frac{1}{S}\\sum_{m=1}^S \\frac{1}{p_{k_m}}a_{ik_m}b_{k_mj} - \\sum_{k=1}^na_{ik}b_{kj}\\right)^2\\right] \\\\ \u0026= \\sum_{i,j=1}^n \\mathrm{Var}\\left[\\frac{1}{S}\\sum_{m=1}^S \\frac{1}{p_{k_m}}a_{ik_m}b_{k_mj}\\right] \\\\ \u0026= \\sum_{i,j=1}^n \\frac{1}{S^2}\\sum_{m=1}^S\\mathrm{Var}\\left[\\frac{1}{p_{k_m}}a_{ik_m}b_{k_mj}\\right] \\\\ \u0026= \\sum_{i,j=1}^n \\frac{1}{S^2}\\sum_{m=1}^S\\sum_{k=1}^n\\left(\\frac{a_{ik}^2b_{kj}^2}{p_k} - a_{ik}^2b_{kj}^2\\right) \\\\ \u0026= \\sum_{i,j=1}^n \\frac{1}{S}\\sum_{k=1}^n\\left(\\frac{a_{ik}^2b_{kj}^2}{p_k} - a_{ik}^2b_{kj}^2\\right) \\\\ \u0026= \\frac{1}{S}\\sum_{k=1}^n\\frac{1}{p_k}\\left(\\sum_{i=1}^n a_{ik}^2\\right)\\left(\\sum_{j=1}^n b_{kj}^2\\right) - \\frac{1}{S}\\|AB\\|_F. \\end{align*} $$\nIt is in our interest to minimize this expression. Fortunately, one can easily lower bound the expression via a clever use of Cauchy-Schwarz:\n$$ \\begin{align*} \u0026\\frac{1}{S}\\sum_{k=1}^n\\frac{1}{p_k}\\left(\\sum_{i=1}^n a_{ik}^2\\right)\\left(\\sum_{j=1}^n b_{kj}^2\\right) - \\frac{1}{S}\\|AB\\|_F \\\\ \u0026= \\frac{1}{S}\\left(\\sum_{k=1}^n p_k\\right)\\left(\\sum_{k=1}^n\\frac{1}{p_k}\\left(\\sum_{i=1}^n a_{ik}^2\\right)\\left(\\sum_{j=1}^n b_{kj}^2\\right)\\right) - \\frac{1}{S}\\|AB\\|_F \\\\ \u0026\\geq \\frac{1}{S}\\sum_{k=1}^n\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2} - \\frac{1}{S}\\|AB\\|_F, \\end{align*} $$ then recall that the equality in Cauchy-Schwarz holds iff we set $p_k$ proportional to $\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}$. Therefore, we minimize the expected error if we set $$ p_k = \\frac{\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}}{\\sum_{k’=1}^n\\sqrt{\\sum_{i=1}^n a_{ik’}^2}\\sqrt{\\sum_{j=1}^n b_{k’j}^2}}. $$\nThe $p_k$ are known as the optimal sampling probabilities.\nAlgorithms like ours tend to be rather resilient to some variation in the sampling probabilities. To illustrate this point in the next post (this has not been posted), we will consider instead $\\beta$-approximately optimal sampling probabilities for some $0\u003c\\beta\u003c1$. That is, we will be interested in sampling probabilities $p_k$ satisfying $$ p_k \\geq \\frac{\\beta\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}}{\\sum_{k’=1}^n\\sqrt{\\sum_{i=1}^n a_{ik’}^2}\\sqrt{\\sum_{j=1}^n b_{k’j}^2}}. $$ Under this assumption, we can quickly derive, using Cauchy-Schwarz, $$ \\begin{align*} \\mathbb{E}[\\|D-AB\\|_F^2] \u0026= \\frac{1}{S}\\sum_{k=1}^n\\frac{1}{p_k}\\left(\\sum_{i=1}^n a_{ik}^2\\right)\\left(\\sum_{j=1}^n b_{kj}^2\\right) - \\frac{1}{S}\\|AB\\|_F \\\\ \u0026\\leq \\frac{1}{S}\\sum_{k=1}^n\\frac{1}{p_k}\\left(\\sum_{i=1}^n a_{ik}^2\\right)\\left(\\sum_{j=1}^n b_{kj}^2\\right) \\\\ \u0026\\leq \\frac{1}{\\beta S}\\sum_{k=1}^n\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}\\sum_{k’=1}^n \\sqrt{\\sum_{i=1}^n a_{ik’}^2}\\sqrt{\\sum_{j=1}^n b_{k’j}^2} \\\\ \u0026= \\frac{1}{\\beta S}\\left(\\sum_{k=1}^n\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}\\right)^2 \\\\ \u0026\\leq \\frac{1}{\\beta S}\\sqrt{\\sum_{k=1}^n\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{k=1}^n\\sum_{j=1}^n b_{kj}^2} \\\\ \u0026\\leq \\frac{1}{\\beta S}\\|A\\|_F\\|B\\|_F. \\end{align*} $$\nWhat Next? So far, choosing the $p_k$ optimally has helped us to minimize the expected error. But we have not managed to control the variance of the error yet. In other words, we want the error to be low, with high probability. This is where picking the value of $S$ comes in. The act of collecting enough samples to kill the variance is usually called concentration in the literature, and this is typically established by invoking a concentration inequality such as Markov’s inequality, Chebyshev’s inequality, or some Chernoff/Hoeffding bound. In the next point, we will introduce the Hoeffding-Azuma inequality (and its hefty amount of prerequisites), and from there we will perform concentration to get a good value of $S$.\nReferences Micheal Mahoney’s Lecture Notes on Randomized Linear Algebra, over at https://arxiv.org/pdf/1608.04481.\n",
+  "wordCount" : "978",
+  "inLanguage": "en",
+  "datePublished": "2025-08-09T00:00:00Z",
+  "dateModified": "2025-08-09T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Me"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/personalpage/posts/simple-rand-matmult/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Unsalvageable Proofs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/personalpage/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/personalpage/" accesskey="h" title="Unsalvageable Proofs (Alt + H)">
+                <img src="http://localhost:1313/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Unsalvageable Proofs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/personalpage/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/personalpage/aboutme/" title="About Me">
+                    <span>About Me</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/personalpage/friends-links/" title="Friends&#39; Links">
+                    <span>Friends&#39; Links</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/personalpage/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/personalpage/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      A Simple Randomized Matrix Multiplication Algorithm
+    </h1>
+    <div class="post-meta"><span title='2025-08-09 00:00:00 +0000 UTC'>August 9, 2025</span>&nbsp;·&nbsp;5 min&nbsp;·&nbsp;978 words&nbsp;·&nbsp;Me&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/simple-rand-matmult.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><blockquote>
+<p>千里之行，始於足下。</p>
+<p>[The journey of a thousand miles begins with a simple step.]</p>
+<p>&ndash; <em>Lao Tzu</em></p></blockquote>
+<h1 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h1>
+<p>We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.</p>
+<p>Obviously, I don&rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:</p>
+<hr>
+<ol>
+<li>Initialize an $n\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$.</li>
+<li>
+<ul>
+<li>For $i=1,\dots,n$,
+<ul>
+<li>For $j=1,\dots,n$,
+<ul>
+<li>For $k=1,&hellip;,n$,
+<ul>
+<li>$c_{ij} \mathrel{+}= a_{ik}b_{kj}$.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return $C$.</li>
+</ol>
+<hr>
+<p>Naturally, because of the triple for-loop in the algorithm, this runs in $\mathcal{O}(n^3)$ time. Depending on your need for speed, this can be considered abysmally slow. For many years, people could not come up with faster ways to multiply matrices, but Volker Strassen published <a href="https://en.wikipedia.org/wiki/Strassen_algorithm">his algorithm</a> with a runtime of $\mathcal{O}(n^{\log_2 7})$ in 1969, and demonstrated that the $\mathcal{O}(n^3)$ barrier could indeed be broken. Nowadays, several more faster algorithms have been discovered, with the <a href="https://arxiv.org/abs/2404.16349">best bound</a> (as of writing) being $\mathcal{O}(n^{2.371339})$.</p>
+<p>But what if this is not enough? What if we wanted <em>faster</em>?</p>
+<p>Generally speaking, one can judge an algorithm in three ways: speed, simplicity, and correctness. Unfortunately, oftentimes these three goals stand in contradiction to each other. Here, we need more speed, and people have already racked their brains hard and came up with the most complicated fast algorithms for matrix multiplication. What we will do today is sacrifice a little <em>correctness</em>. More precisely, we will introduce some randomization into the picture, and only ask that our algorithm returns something (quantifiably) close to the right answer most of the time.</p>
+<h1 id="the-idea">The Idea<a hidden class="anchor" aria-hidden="true" href="#the-idea">#</a></h1>
+<p>Of course, we all know how to multiply matrices, so observe that</p>
+<p>$$
+AB = \left(\sum_{k=1}^n a_{ik}b_{kj}\right)_{i,j=1}^n = \sum_{k=1}^n\left(a_{ik}b_{kj}\right)_{i,j=1}^n.
+$$
+The right-hand side is a product of rank-one matrices. The idea is that we could randomly sample the rank-one matrices (essentially, we are randomly sampling $k$ from $1,\dots,n$) and sum them up. Evaluating each rank-one matrix takes $\mathcal{O}(n^2)$ time, so if we can show that we do not have to sample too many times, we will have a fast algorithm. Therefore, we will consider the following algorithm template.</p>
+<hr>
+<p>Inputs: the sample size $S\in\mathbb{Z}_{&gt;0}$, and probabilities $p_1,&hellip;,p_n&gt;0$ summing to $1$.</p>
+<ol>
+<li>Initialize an $n\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$.</li>
+<li>
+<ul>
+<li>Repeat $S$ times:
+<ul>
+<li>Pick a random $k\in{1,\dots,n}$ with probability $p_k$.</li>
+<li>For $i=1,\dots,n$,
+<ul>
+<li>For $j=1,&hellip;,n$,
+<ul>
+<li>$c_{ij} \mathrel{+}= \frac{1}{p_i} a_{ik}b_{kj}$.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return $D := \frac{1}{S}C$.</li>
+</ol>
+<hr>
+<p>Naturally, one has to pick the $p_k$ so that the algorithm works. But by magic, the choice of $p_k$ does not matter in the following sense:</p>
+<p><strong>Lemma.</strong> Regardless of the choice of $p_k$, one has $\mathbb{E}[D] = AB$.</p>
+<p>In English, this means that $D$ is always an unbiased estimator of $AB$.</p>
+<p><em>Proof.</em> We let $k_m$ be the $m$&lsquo;th sample of $k$, so that</p>
+<p>$$
+\begin{align*}
+D=\frac{1}{S}\sum_{m=1}^S\frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n.
+\end{align*}
+$$</p>
+<p>By linearity of expectation, one then gets</p>
+<p>$$
+\begin{align*}
+\mathbb{E}[D]
+&amp;=\frac{1}{S}\sum_{m=1}^S\mathbb{E}\left[\frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n\right] \\
+&amp;=\frac{1}{S}\sum_{m=1}^S\sum_{k=1}^n p_k \frac{1}{p_{k}}(a_{ik}b_{kj})_{i,j=1}^n \\
+&amp;=\frac{1}{S}\sum_{m=1}^S\sum_{k=1}^n (a_{ik}b_{kj})_{i,j=1}^n \\
+&amp;=\frac{1}{S}\sum_{m=1}^S AB \\
+&amp;= AB.
+\end{align*}
+$$</p>
+<p>So our algorithm technically works. Unfortunately, works is not enough: the variance of the outputs could be absurdly high, such that most of the answers are way off from the correct answer. The next thing to do is to control this variance. This means we got to control $D-AB$, which also means we have to impose a notion of size onto $D-AB$. Our choice is to use the Frobenius norm:</p>
+<p>$$
+\|A\|_{F} = \sqrt{\sum_{i,j=1}^n |a_{ij}|^2}.
+$$</p>
+<p>One has, by the independence of the $k_m$, that
+$$
+\begin{align*}
+\mathbb{E}[\|D-AB\|_F^2]
+&amp;= \sum_{i,j=1}^n \mathbb{E}\left[\left(\frac{1}{S}\sum_{m=1}^S \frac{1}{p_{k_m}}a_{ik_m}b_{k_mj} - \sum_{k=1}^na_{ik}b_{kj}\right)^2\right] \\
+&amp;= \sum_{i,j=1}^n \mathrm{Var}\left[\frac{1}{S}\sum_{m=1}^S \frac{1}{p_{k_m}}a_{ik_m}b_{k_mj}\right] \\
+&amp;= \sum_{i,j=1}^n \frac{1}{S^2}\sum_{m=1}^S\mathrm{Var}\left[\frac{1}{p_{k_m}}a_{ik_m}b_{k_mj}\right] \\
+&amp;= \sum_{i,j=1}^n \frac{1}{S^2}\sum_{m=1}^S\sum_{k=1}^n\left(\frac{a_{ik}^2b_{kj}^2}{p_k} - a_{ik}^2b_{kj}^2\right) \\
+&amp;= \sum_{i,j=1}^n \frac{1}{S}\sum_{k=1}^n\left(\frac{a_{ik}^2b_{kj}^2}{p_k} - a_{ik}^2b_{kj}^2\right) \\
+&amp;= \frac{1}{S}\sum_{k=1}^n\frac{1}{p_k}\left(\sum_{i=1}^n a_{ik}^2\right)\left(\sum_{j=1}^n b_{kj}^2\right) - \frac{1}{S}\|AB\|_F.
+\end{align*}
+$$</p>
+<p>It is in our interest to minimize this expression. Fortunately, one can easily lower bound the expression via a clever use of Cauchy-Schwarz:</p>
+<p>$$
+\begin{align*}
+&amp;\frac{1}{S}\sum_{k=1}^n\frac{1}{p_k}\left(\sum_{i=1}^n a_{ik}^2\right)\left(\sum_{j=1}^n b_{kj}^2\right) - \frac{1}{S}\|AB\|_F \\
+&amp;= \frac{1}{S}\left(\sum_{k=1}^n p_k\right)\left(\sum_{k=1}^n\frac{1}{p_k}\left(\sum_{i=1}^n a_{ik}^2\right)\left(\sum_{j=1}^n b_{kj}^2\right)\right) - \frac{1}{S}\|AB\|_F \\
+&amp;\geq \frac{1}{S}\sum_{k=1}^n\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2} - \frac{1}{S}\|AB\|_F,
+\end{align*}
+$$
+then recall that the equality in Cauchy-Schwarz holds iff we set $p_k$ proportional to $\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}$. Therefore, we minimize the expected error if we set
+$$
+p_k = \frac{\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}}{\sum_{k&rsquo;=1}^n\sqrt{\sum_{i=1}^n a_{ik&rsquo;}^2}\sqrt{\sum_{j=1}^n b_{k&rsquo;j}^2}}.
+$$</p>
+<p>The $p_k$ are known as the <em>optimal sampling probabilities</em>.</p>
+<p>Algorithms like ours tend to be rather resilient to some variation in the sampling probabilities. To illustrate this point in the next post (this has not been posted), we will consider instead <em>$\beta$-approximately optimal sampling probabilities</em> for some $0&lt;\beta&lt;1$. That is, we will be interested in sampling probabilities $p_k$ satisfying
+$$
+p_k \geq \frac{\beta\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}}{\sum_{k&rsquo;=1}^n\sqrt{\sum_{i=1}^n a_{ik&rsquo;}^2}\sqrt{\sum_{j=1}^n b_{k&rsquo;j}^2}}.
+$$
+Under this assumption, we can quickly derive, using Cauchy-Schwarz,
+$$
+\begin{align*}
+\mathbb{E}[\|D-AB\|_F^2]
+&amp;= \frac{1}{S}\sum_{k=1}^n\frac{1}{p_k}\left(\sum_{i=1}^n a_{ik}^2\right)\left(\sum_{j=1}^n b_{kj}^2\right) - \frac{1}{S}\|AB\|_F \\
+&amp;\leq \frac{1}{S}\sum_{k=1}^n\frac{1}{p_k}\left(\sum_{i=1}^n a_{ik}^2\right)\left(\sum_{j=1}^n b_{kj}^2\right) \\
+&amp;\leq \frac{1}{\beta S}\sum_{k=1}^n\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}\sum_{k&rsquo;=1}^n \sqrt{\sum_{i=1}^n a_{ik&rsquo;}^2}\sqrt{\sum_{j=1}^n b_{k&rsquo;j}^2} \\
+&amp;= \frac{1}{\beta S}\left(\sum_{k=1}^n\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}\right)^2 \\
+&amp;\leq \frac{1}{\beta S}\sqrt{\sum_{k=1}^n\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{k=1}^n\sum_{j=1}^n b_{kj}^2} \\
+&amp;\leq \frac{1}{\beta S}\|A\|_F\|B\|_F.
+\end{align*}
+$$</p>
+<h1 id="what-next">What Next?<a hidden class="anchor" aria-hidden="true" href="#what-next">#</a></h1>
+<p>So far, choosing the $p_k$ optimally has helped us to minimize the expected error. But we have not managed to control the variance of the error yet. In other words, we want the error to be low, with high probability. This is where picking the value of $S$ comes in. The act of collecting enough samples to kill the variance is usually called <em>concentration</em> in the literature, and this is typically established by invoking a concentration inequality such as Markov&rsquo;s inequality, Chebyshev&rsquo;s inequality, or some Chernoff/Hoeffding bound. In the next point, we will introduce the Hoeffding-Azuma inequality (and its hefty amount of prerequisites), and from there we will perform concentration to get a good value of $S$.</p>
+<h1 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h1>
+<p>Micheal Mahoney&rsquo;s Lecture Notes on Randomized Linear Algebra, over at <a href="https://arxiv.org/pdf/1608.04481">https://arxiv.org/pdf/1608.04481</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/personalpage/">Unsalvageable Proofs</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

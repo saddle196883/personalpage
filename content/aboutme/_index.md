@@ -10,7 +10,7 @@ math: true
 
 My full name is Timothy Wan Kai Yang. As of now, I have just begun my PhD studies in Mathematics in the National University of Singapore.
 
-My PhD topic will almost surely be in the area of fluid dynamics and/or partial differential equations. Outside of that, I am also interested in studying various semantics of non-classical logics. My final year project in my undergraduate career was on using algebraic semantics to demonstrate a certain conservativity result in linear logic. I hope that in the coming months and years, I will also pick up knowledge about other semantics like game semantics or categorical semantics. I would also like to learnnumerical methods a lot more seriously, as I want to be able to do numerical simulations of the various PDEs that I will invitably study.
+My PhD topic will almost surely be in the area of fluid dynamics and/or partial differential equations. Outside of that, I am also interested in studying various semantics of non-classical logics. My final year project in my undergraduate career was on using algebraic semantics to demonstrate a certain conservativity result in linear logic. I hope that in the coming months and years, I will also pick up knowledge about other semantics like game semantics or categorical semantics. I would also like to learn numerical methods a lot more seriously, as I want to be able to do numerical simulations of the various PDEs that I will inevitably study.
 
 Aside from mathematics, I am a proficient keyboard warrior (hence this personal site), I fold origami occasionally, I solve some programming exercises and I play gacha games. I have also recently gotten addicted to Factorio and Crosscode.
 

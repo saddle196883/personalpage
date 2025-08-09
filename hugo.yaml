@@ -21,7 +21,7 @@ params:
   disableThemeToggle: false
 
   ShowReadingTime: true
-  ShowShareButtons: true
+  ShowShareButtons: false
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -112,6 +112,9 @@ params:
     keys: ["title", "permalink", "summary", "content"]
 menu:
   main:
+    - name: Archive
+      url: archives/
+      weight: 5
     - identifier: About Me
       name: About Me
       url: /aboutme/

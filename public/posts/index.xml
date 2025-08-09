@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Unsalvageable Proofs</title>
+    <link>http://localhost:1313/personalpage/posts/</link>
+    <description>Recent content in Posts on Unsalvageable Proofs</description>
+    <generator>Hugo -- 0.147.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 09 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/personalpage/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Simple Randomized Matrix Multiplication Algorithm</title>
+      <link>http://localhost:1313/personalpage/posts/simple-rand-matmult/</link>
+      <pubDate>Sat, 09 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/personalpage/posts/simple-rand-matmult/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;千里之行，始於足下。&lt;/p&gt;
+&lt;p&gt;[The journey of a thousand miles begins with a simple step.]&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;em&gt;Lao Tzu&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;It&amp;rsquo;s a&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
