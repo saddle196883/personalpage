@@ -17,7 +17,23 @@
 &lt;p&gt;千里之行，始於足下。&lt;/p&gt;
 &lt;p&gt;[The journey of a thousand miles begins with a simple step.]&lt;/p&gt;
 &lt;p&gt;&amp;ndash; &lt;em&gt;Lao Tzu&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;It&amp;rsquo;s a&lt;/p&gt;</description>
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.&lt;/p&gt;
+&lt;p&gt;Obviously, I don&amp;rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A Simple Randomized Matrix Multiplication Algorithm 2</title>
+      <link>http://localhost:1313/personalpage/posts/simple-rand-matmult-2/</link>
+      <pubDate>Sat, 09 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/personalpage/posts/simple-rand-matmult-2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;千里之行，始於足下。&lt;/p&gt;
+&lt;p&gt;[The journey of a thousand miles begins with a simple step.]&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;em&gt;Lao Tzu&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;This post is the continuation of the previous post over &lt;a href=&#34;&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+&lt;h1 id=&#34;references&#34;&gt;References&lt;/h1&gt;
+&lt;p&gt;Micheal Mahoney&amp;rsquo;s Lecture Notes on Randomized Linear Algebra, over at &lt;a href=&#34;https://arxiv.org/pdf/1608.04481&#34;&gt;https://arxiv.org/pdf/1608.04481&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

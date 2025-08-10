@@ -6,10 +6,22 @@
     <description>Recent content on Unsalvageable Proofs</description>
     <generator>Hugo -- 0.147.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Aug 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/personalpage/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A Simple Randomized Matrix Multiplication Algorithm</title>
+      <title>A Simple Randomized Matrix Multiplication Algorithm 2</title>
+      <link>http://localhost:1313/personalpage/posts/simple-rand-matmult-2/</link>
+      <pubDate>Sun, 10 Aug 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/personalpage/posts/simple-rand-matmult-2/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.&lt;/p&gt;
+&lt;p&gt;&amp;ndash; &lt;em&gt;Sir Francis Galton&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;This post is the continuation of the previous post over &lt;a href=&#34;http://localhost:1313/personalpage/posts/simple-rand-matmult/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;last-time&#34;&gt;Last Time&lt;/h1&gt;
+&lt;p&gt;In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\mathbb{E}[\|D-AB\|_F^2]$ satisfies&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>A Simple Randomized Matrix Multiplication Algorithm 1</title>
       <link>http://localhost:1313/personalpage/posts/simple-rand-matmult/</link>
       <pubDate>Sat, 09 Aug 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/personalpage/posts/simple-rand-matmult/</guid>
@@ -19,7 +31,7 @@
 &lt;p&gt;&amp;ndash; &lt;em&gt;Lao Tzu&lt;/em&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;We all have to start somewhere, and I have decided to start the blog with something simple, that most people in the quantitative sciences would have to deal with at some point in their lives: matrix multiplication.&lt;/p&gt;
-&lt;p&gt;Obviously, I don&amp;rsquo;t need to elaborate on why being able to perform matrix multiplication fast is important. So consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, and let us think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:&lt;/p&gt;</description>
+&lt;p&gt;Performing matrix multiplication fast is important for many applications, like machine learning or numerical methods. We will consider matrices (square of order $n$, for simplicity) $A=(a_{ij})_{i,j=1}^n$, and $B=(b_{ij})_{i,j=1}^n$, think about ways to evaluate $AB$. The simplest, most naive algorithm would be as follows:&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

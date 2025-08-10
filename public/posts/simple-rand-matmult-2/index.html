@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/personalpage/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=personalpage/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>A Simple Randomized Matrix Multiplication Algorithm 2 | Unsalvageable Proofs</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.
+&ndash; Sir Francis Galton
+This post is the continuation of the previous post over here.
+Last Time
+In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\mathbb{E}[\|D-AB\|_F^2]$ satisfies">
+<meta name="author" content="Me">
+<link rel="canonical" href="http://localhost:1313/personalpage/posts/simple-rand-matmult-2/">
+<meta name="yandex-verification" content="XYZabc">
+<meta name="msvalidate.01" content="XYZabc">
+<link crossorigin="anonymous" href="/personalpage/assets/css/stylesheet.f49d66caae9ea0fd43f21f29e71a8d3e284517ed770f2aa86fa012953ad3c9ef.css" integrity="sha256-9J1myq6eoP1D8h8p5xqNPihFF&#43;13Dyqob6ASlTrTye8=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/personalpage/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/personalpage/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/personalpage/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/personalpage/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/personalpage/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/personalpage/posts/simple-rand-matmult-2/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+<meta property="og:url" content="http://localhost:1313/personalpage/posts/simple-rand-matmult-2/">
+  <meta property="og:site_name" content="Unsalvageable Proofs">
+  <meta property="og:title" content="A Simple Randomized Matrix Multiplication Algorithm 2">
+  <meta property="og:description" content=" The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.
+– Sir Francis Galton
+This post is the continuation of the previous post over here.
+Last Time In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\mathbb{E}[\|D-AB\|_F^2]$ satisfies">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-10T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Simple Randomized Matrix Multiplication Algorithm 2">
+<meta name="twitter:description" content="
+The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.
+&ndash; Sir Francis Galton
+This post is the continuation of the previous post over here.
+Last Time
+In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\mathbb{E}[\|D-AB\|_F^2]$ satisfies">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/personalpage/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "A Simple Randomized Matrix Multiplication Algorithm 2",
+      "item": "http://localhost:1313/personalpage/posts/simple-rand-matmult-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Simple Randomized Matrix Multiplication Algorithm 2",
+  "name": "A Simple Randomized Matrix Multiplication Algorithm 2",
+  "description": " The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.\n\u0026ndash; Sir Francis Galton\nThis post is the continuation of the previous post over here.\nLast Time In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\\mathbb{E}[\\|D-AB\\|_F^2]$ satisfies\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.\n– Sir Francis Galton\nThis post is the continuation of the previous post over here.\nLast Time In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\\mathbb{E}[\\|D-AB\\|_F^2]$ satisfies\n$$ \\begin{align*} \\mathbb{E}[\\|D-AB\\|_F^2] \\leq \\frac{1}{\\beta S}\\|A\\|_F^2\\|B\\|_F^2, \\end{align*} $$ when we sample with $\\beta$-optimal sampling probabilities, i.e.\n$$ p_k \\geq \\frac{\\beta\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}}{\\sum_{k’=1}^n\\sqrt{\\sum_{i=1}^n a_{ik’}^2}\\sqrt{\\sum_{j=1}^n b_{k’j}^2}}. $$\nNow that we know $\\mathbb{E}[\\|D-AB\\|_F^2]$ in expectation, our next step is to ensure that $\\|D-AB\\|_F^2$ does not deviate too far from its expected value most of the time. In order to do so, we will need some concentration inequality.\nMcDiarmid’s inequality McDiarmid’s inequality is typically used to control the deviations of functions from their expected values, if the function does not “vary too much” if we vary one variable while leaving the others fixed. More concretely, we need our function to satisfy the following property:\nDefinition. A function $f:\\mathcal{X}_1\\times \\dots \\mathcal{X}_n\\to \\mathbb{R}$ satisfies the bounded difference property if and only if there exists constants $c_1,\\dots, c_n$ such that for every $x_1\\in \\mathcal{X}_1,\\dots,x_n\\in \\mathcal{X}_n$ and any $i=1,\\dots,n$, one has $$ \\sup_{y\\in X_i}|f(x_1,\\dots,x_i,\\dots,x_n) - f(x_1,\\dots,y,\\dots,x_n)|\\leq c_i. $$\nThen McDiarmid’s inequality is as follows:\nTheorem. (McDiarmid’s inequality) Let $X_1,\\dots,X_n$ be independent random variables taking values in $\\mathcal{X}_1,\\dots,\\mathcal{X}_n$ respectively, and let $f:\\mathcal{X}_1\\times\\dots\\times \\mathcal{X}_n\\to\\mathbb{R}$ satisfy the bounded difference property. Then\n$$ \\mathrm{Pr}\\left[f(X_1,\\dots,X_n)-\\mathbb{E}[f(X_1,\\dots,X_n)]\\geq \\tau\\right]\\leq \\exp\\left(-\\frac{2\\tau^2}{\\sum_{i=1}^n c_i^2}\\right). $$ We omit the proof, but the typical way to prove McDiarmid’s inequality is to construct a Doob martingale and apply the Azuma-Hoeffding inequality. (In fact, the original plan for this post was to do precisely that, but I gave up writing about martingales.)\nConcentration inequalities like this one control the probability that one ends up in the tail ends of a distribution. There is a plethora of concentration inequalities out there: check out the wikipedia page for a few of them.\nConcentration Having stated the inequality, we should now consider how to use it. The value we want to control is $\\|D-AB\\|_F$. This value depends on our choice of $k_m$ for each $m=1,\\dots,S$. It therefore makes sense to define $f:\\{1,…,n\\}^S\\to \\mathbb{R}$ by $$ f(k_1, \\dots, k_S) = \\|D - AB\\|_F, $$ where $D=\\sum_{m=1}^S \\frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n$.\nNow suppose that for some fixed $m$, we replaced $k_m$ with $k_m'$, and called this modified matrix $D'$. Then by the triangle inequality and Cauchy-Schwarz, we get: $$ \\begin{align*} \\|D-D'\\|_F \u0026= \\left\\|\\frac{1}{Sp_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n - \\frac{1}{Sp_{k_m'}}(a_{ik_m'}b_{k_m'j})_{i,j=1}^n\\right\\|_F \\\\ \u0026\\leq \\frac{1}{Sp_{k_m}}\\|(a_{ik_m}b_{k_mj})_{i,j=1}^n\\| + \\frac{1}{Sp_{k_m'}}\\|(a_{ik_m'}b_{k_m'j})_{i,j=1}^n\\|_F \\\\ \u0026= \\frac{1}{Sp_{k_m}}\\sqrt{\\sum_{i,j=1}^n a_{ik_m}^2b_{k_mj}^2} + \\frac{1}{Sp_{k_m'}}\\sqrt{\\sum_{i,j=1}^na_{ik_m'}^2b_{k_m'j}^2} \\\\ \u0026= \\frac{2}{S} \\max_{k=1,\\dots,n} \\frac{\\sqrt{\\sum_{i,j=1}^n a_{ik}^2b_{kj}^2}}{p_k} \\\\ \u0026= \\frac{2}{S} \\max_{k=1,\\dots,n} \\frac{\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^nb_{kj}^2}}{p_k} \\\\ \u0026\\leq \\frac{2}{\\beta S} \\sum_{k=1}^n \\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^nb_{kj}^2} \\\\ \u0026\\leq \\frac{2}{\\beta S} \\sqrt{\\sum_{i,k=1}^n a_{ik}^2}\\sqrt{\\sum_{j,k=1}^nb_{kj}^2} \\\\ \u0026\\leq \\frac{2}{\\beta S} \\|A\\|_F\\|B\\|_F. \\end{align*} $$ Consequently, $$ \\|D-AB\\|_F \\leq \\|D'-AB\\|_F + \\|D-D'\\|_F, $$ $$ \\|D'-AB\\|_F \\leq \\|D-AB\\|_F + \\|D-D'\\|_F, $$ give $$ \\max_{y=1,\\dots,n}|f(k_1,\\dots,k_m,\\dots,k_S) - f(k_1,\\dots,y,\\dots,k_S)|\\leq \\frac{2}{\\beta S}\\|A\\|_F\\|B\\|_F. $$\nHence by McDiarmid’s inequality one has, for all $\\varepsilon\u003e0$, $$ \\mathrm{Pr}\\left[\\|D-AB\\|_F-\\mathbb{E}[\\|D-AB\\|_F]\\geq \\varepsilon\\|A\\|_F\\|B\\|_F\\right]\\leq \\exp\\left(-\\frac{\\varepsilon^2\\beta^2S}{2}\\right). $$\nOn the other hand, because $\\mathbb{E}[\\|D-AB\\|_F]\\leq \\sqrt{\\mathbb{E}[\\|D-AB\\|_F^2} \\leq\\frac{1}{\\sqrt{\\beta S}}\\|A\\|_F\\|B\\|_F$ by Jensen’s inequality, $$ \\begin{align*} \u0026\\mathrm{Pr}\\left[\\|D-AB\\|_F-\\mathbb{E}[\\|D-AB\\|_F]\\geq \\varepsilon\\|A\\|_F\\|B\\|_F\\right] \\\\ \u0026\\geq \\mathrm{Pr}\\left[\\|D-AB\\|_F - \\frac{1}{\\beta S}\\|A\\|_F\\|B\\|_F\\geq \\varepsilon\\|A\\|_F\\|B\\|_F\\right] \\\\ \u0026= \\mathrm{Pr}\\left[\\|D-AB\\|_F \\geq \\left(\\frac{1}{\\sqrt{\\beta S}} + \\varepsilon\\right)\\|A\\|_F\\|B\\|_F\\right]. \\end{align*} $$\nTherefore, for $0\u003c\\delta\u003c1$, if we set $$S=\\max\\left\\{\\varepsilon^{-2}\\beta^{-1}, 2\\varepsilon^{-2}\\beta^{-2}\\log\\frac{1}{\\delta}\\right\\} = 2\\varepsilon^{-2}\\beta^{-2}\\log\\frac{1}{\\delta},$$ we will attain $$ \\begin{align*} \\mathrm{Pr}\\left[\\|D-AB\\|_F \\geq 2\\varepsilon\\|A\\|_F\\|B\\|_F\\right] \\leq \\delta. \\end{align*} $$\nIn particular, we observe that if the value of $\\beta$ does not deviate far from $1$, then its impact on the performance of the algorithm is not too large.\nSummary Our final algorithm is therefore as follows:\nCompute $w_k=\\sqrt{\\sum_{i=1}^n a_{ik}^2}\\sqrt{\\sum_{j=1}^n b_{kj}^2}$ for each $k=1,\\dots,n$. Compute $p_k = \\frac{w_k}{\\sum_{k'=1}^n w_k'}$. Initialize an $n\\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$. Repeat $S=2\\varepsilon^{-2}\\log\\frac{1}{\\delta}$ times: Pick a random $k\\in{1,\\dots,n}$ with probability $p_k$. For $i=1,\\dots,n$, For $j=1,…,n$, $c_{ij} \\mathrel{+}= \\frac{1}{p_i} a_{ik}b_{kj}$. Return $D := \\frac{1}{S}C$. And from above, we have the following result:\nTheorem. With probability at least $1-\\delta$, the output $D$ of the algorithm above satisfies $\\|D-AB\\|_F \u003c 2\\varepsilon\\|A\\|_F\\|B\\|_F$.\nFinal Remarks Because each $w_k$ is computed in $\\mathcal{O}(n)$, the final algorithm has runtime $\\mathcal{O}(\\varepsilon^{-2}n^2\\log\\frac{1}{\\delta})$. While on paper this might look nice, it is not very useful in practice: the $\\varepsilon^{-2}$ dooms the algorithm to produce low accuracy results, unless we increase the runtime significantly. This $\\varepsilon^{-2}$ is present due to the central limit theorem, and in general cannot be avoided: such is the limitation of pretty much all sampling algorithms out there. Nonetheless, it is a good window into the myriad of possible cuts in runtime that randomization can being into matrix algorithms.\nI should remark at the end that at some point in the computations, I had deviated signifcantly from the references that I have been using. In particular, if there are any errors in the computations, it is solely my fault. Please contact me if you do spot any errors.\nReferences Micheal Mahoney’s Lecture Notes on Randomized Linear Algebra, over at https://arxiv.org/pdf/1608.04481.\nThe Wikipedia page on McDoarmid’s inequality, over at https://en.wikipedia.org/wiki/McDiarmid%27s_inequality.\n",
+  "wordCount" : "836",
+  "inLanguage": "en",
+  "datePublished": "2025-08-10T00:00:00Z",
+  "dateModified": "2025-08-10T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Me"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/personalpage/posts/simple-rand-matmult-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Unsalvageable Proofs",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/personalpage/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/personalpage/" accesskey="h" title="Unsalvageable Proofs (Alt + H)">
+                <img src="http://localhost:1313/apple-touch-icon.png" alt="" aria-label="logo"
+                    height="35">Unsalvageable Proofs</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/personalpage/archives/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/personalpage/aboutme/" title="About Me">
+                    <span>About Me</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/personalpage/friends-links/" title="Friends&#39; Links">
+                    <span>Friends&#39; Links</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/personalpage/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/personalpage/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      A Simple Randomized Matrix Multiplication Algorithm 2
+    </h1>
+    <div class="post-meta"><span title='2025-08-10 00:00:00 +0000 UTC'>August 10, 2025</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;836 words&nbsp;·&nbsp;Me&nbsp;|&nbsp;<a href="https://github.com/saddle196883/personalpage/blob/main/content/posts/simple-rand-matmult-2.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+
+</div>
+  </header> 
+  <div class="post-content"><blockquote>
+<p>The huger the mob, and the greater the apparent anarchy, the more perfect is its sway. It is the supreme law of Unreason.</p>
+<p>&ndash; <em>Sir Francis Galton</em></p></blockquote>
+<p>This post is the continuation of the previous post over <a href="/personalpage/posts/simple-rand-matmult/">here</a>.</p>
+<h1 id="last-time">Last Time<a hidden class="anchor" aria-hidden="true" href="#last-time">#</a></h1>
+<p>In the previous post, we began the analysis of a randomized matrix multiplication algorithm. We managed to prove that the output of the algorithm gives us our product $AB$ in expectation, and furthermore, that the expected squared deviation $\mathbb{E}[\|D-AB\|_F^2]$ satisfies</p>
+<p>$$
+\begin{align*}
+\mathbb{E}[\|D-AB\|_F^2] \leq \frac{1}{\beta S}\|A\|_F^2\|B\|_F^2,
+\end{align*}
+$$
+when we sample with $\beta$-optimal sampling probabilities, i.e.</p>
+<p>$$
+p_k \geq \frac{\beta\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}}{\sum_{k&rsquo;=1}^n\sqrt{\sum_{i=1}^n a_{ik&rsquo;}^2}\sqrt{\sum_{j=1}^n b_{k&rsquo;j}^2}}.
+$$</p>
+<p>Now that we know $\mathbb{E}[\|D-AB\|_F^2]$ in expectation, our next step is to ensure that $\|D-AB\|_F^2$ does not deviate too far from its expected value most of the time. In order to do so, we will need some concentration inequality.</p>
+<h1 id="mcdiarmids-inequality">McDiarmid&rsquo;s inequality<a hidden class="anchor" aria-hidden="true" href="#mcdiarmids-inequality">#</a></h1>
+<p>McDiarmid&rsquo;s inequality is typically used to control the deviations of functions from their expected values, if the function does not &ldquo;vary too much&rdquo; if we vary one variable while leaving the others fixed. More concretely, we need our function to satisfy the following property:</p>
+<p><strong>Definition.</strong> A function $f:\mathcal{X}_1\times \dots \mathcal{X}_n\to \mathbb{R}$ satisfies the <em>bounded difference property</em> if and only if there exists constants $c_1,\dots, c_n$ such that for every $x_1\in \mathcal{X}_1,\dots,x_n\in \mathcal{X}_n$ and any $i=1,\dots,n$, one has
+$$
+\sup_{y\in X_i}|f(x_1,\dots,x_i,\dots,x_n) - f(x_1,\dots,y,\dots,x_n)|\leq c_i.
+$$</p>
+<p>Then McDiarmid&rsquo;s inequality is as follows:</p>
+<p><strong>Theorem. (McDiarmid&rsquo;s inequality)</strong> Let $X_1,\dots,X_n$ be independent random variables taking values in $\mathcal{X}_1,\dots,\mathcal{X}_n$ respectively, and let $f:\mathcal{X}_1\times\dots\times \mathcal{X}_n\to\mathbb{R}$ satisfy the bounded difference property. Then</p>
+<p>$$
+\mathrm{Pr}\left[f(X_1,\dots,X_n)-\mathbb{E}[f(X_1,\dots,X_n)]\geq \tau\right]\leq \exp\left(-\frac{2\tau^2}{\sum_{i=1}^n c_i^2}\right).
+$$
+We omit the proof, but the typical way to prove McDiarmid&rsquo;s inequality is to construct a Doob martingale and apply the Azuma-Hoeffding inequality. (In fact, the original plan for this post was to do precisely that, but I gave up writing about martingales.)</p>
+<p>Concentration inequalities like this one control the probability that one ends up in the tail ends of a distribution. There is a plethora of concentration inequalities out there: check out the <a href="https://en.wikipedia.org/wiki/Concentration_inequality">wikipedia page</a> for a few of them.</p>
+<h1 id="concentration">Concentration<a hidden class="anchor" aria-hidden="true" href="#concentration">#</a></h1>
+<p>Having stated the inequality, we should now consider how to use it. The value we want to control is $\|D-AB\|_F$. This value depends on our choice of $k_m$ for each $m=1,\dots,S$. It therefore makes sense to define $f:\{1,&hellip;,n\}^S\to \mathbb{R}$ by
+$$
+f(k_1, \dots, k_S) = \|D - AB\|_F,
+$$
+where $D=\sum_{m=1}^S \frac{1}{p_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n$.</p>
+<p>Now suppose that for some fixed $m$, we replaced $k_m$ with $k_m'$, and called this modified matrix $D'$. Then by the triangle inequality and Cauchy-Schwarz, we get:
+$$
+\begin{align*}
+\|D-D'\|_F
+&amp;= \left\|\frac{1}{Sp_{k_m}}(a_{ik_m}b_{k_mj})_{i,j=1}^n - \frac{1}{Sp_{k_m'}}(a_{ik_m'}b_{k_m'j})_{i,j=1}^n\right\|_F \\
+&amp;\leq \frac{1}{Sp_{k_m}}\|(a_{ik_m}b_{k_mj})_{i,j=1}^n\| + \frac{1}{Sp_{k_m'}}\|(a_{ik_m'}b_{k_m'j})_{i,j=1}^n\|_F \\
+&amp;= \frac{1}{Sp_{k_m}}\sqrt{\sum_{i,j=1}^n a_{ik_m}^2b_{k_mj}^2} + \frac{1}{Sp_{k_m'}}\sqrt{\sum_{i,j=1}^na_{ik_m'}^2b_{k_m'j}^2} \\
+&amp;= \frac{2}{S} \max_{k=1,\dots,n} \frac{\sqrt{\sum_{i,j=1}^n a_{ik}^2b_{kj}^2}}{p_k} \\
+&amp;= \frac{2}{S} \max_{k=1,\dots,n} \frac{\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^nb_{kj}^2}}{p_k} \\
+&amp;\leq \frac{2}{\beta S} \sum_{k=1}^n \sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^nb_{kj}^2} \\
+&amp;\leq \frac{2}{\beta S} \sqrt{\sum_{i,k=1}^n a_{ik}^2}\sqrt{\sum_{j,k=1}^nb_{kj}^2} \\
+&amp;\leq \frac{2}{\beta S} \|A\|_F\|B\|_F.
+\end{align*}
+$$
+Consequently,
+$$
+\|D-AB\|_F \leq \|D'-AB\|_F + \|D-D'\|_F,
+$$
+$$
+\|D'-AB\|_F \leq \|D-AB\|_F + \|D-D'\|_F,
+$$
+give
+$$
+\max_{y=1,\dots,n}|f(k_1,\dots,k_m,\dots,k_S) - f(k_1,\dots,y,\dots,k_S)|\leq \frac{2}{\beta S}\|A\|_F\|B\|_F.
+$$</p>
+<p>Hence by McDiarmid&rsquo;s inequality one has, for all $\varepsilon&gt;0$,
+$$
+\mathrm{Pr}\left[\|D-AB\|_F-\mathbb{E}[\|D-AB\|_F]\geq \varepsilon\|A\|_F\|B\|_F\right]\leq \exp\left(-\frac{\varepsilon^2\beta^2S}{2}\right).
+$$</p>
+<p>On the other hand, because $\mathbb{E}[\|D-AB\|_F]\leq \sqrt{\mathbb{E}[\|D-AB\|_F^2} \leq\frac{1}{\sqrt{\beta S}}\|A\|_F\|B\|_F$ by Jensen&rsquo;s inequality,
+$$
+\begin{align*}
+&amp;\mathrm{Pr}\left[\|D-AB\|_F-\mathbb{E}[\|D-AB\|_F]\geq \varepsilon\|A\|_F\|B\|_F\right] \\
+&amp;\geq \mathrm{Pr}\left[\|D-AB\|_F - \frac{1}{\beta S}\|A\|_F\|B\|_F\geq \varepsilon\|A\|_F\|B\|_F\right] \\
+&amp;= \mathrm{Pr}\left[\|D-AB\|_F \geq \left(\frac{1}{\sqrt{\beta S}} + \varepsilon\right)\|A\|_F\|B\|_F\right].
+\end{align*}
+$$</p>
+<p>Therefore, for $0&lt;\delta&lt;1$, if we set
+$$S=\max\left\{\varepsilon^{-2}\beta^{-1}, 2\varepsilon^{-2}\beta^{-2}\log\frac{1}{\delta}\right\} = 2\varepsilon^{-2}\beta^{-2}\log\frac{1}{\delta},$$
+we will attain
+$$
+\begin{align*}
+\mathrm{Pr}\left[\|D-AB\|_F \geq 2\varepsilon\|A\|_F\|B\|_F\right] \leq \delta.
+\end{align*}
+$$</p>
+<p>In particular, we observe that if the value of $\beta$ does not deviate far from $1$, then its impact on the performance of the algorithm is not too large.</p>
+<h1 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h1>
+<p>Our final algorithm is therefore as follows:</p>
+<hr>
+<ol>
+<li>Compute $w_k=\sqrt{\sum_{i=1}^n a_{ik}^2}\sqrt{\sum_{j=1}^n b_{kj}^2}$ for each $k=1,\dots,n$.</li>
+<li>Compute $p_k = \frac{w_k}{\sum_{k'=1}^n w_k'}$.</li>
+<li>Initialize an $n\times n$ zero matrix $C=(c_{ij})_{i,j=1}^n$.</li>
+<li>
+<ul>
+<li>Repeat $S=2\varepsilon^{-2}\log\frac{1}{\delta}$ times:
+<ul>
+<li>Pick a random $k\in{1,\dots,n}$ with probability $p_k$.</li>
+<li>For $i=1,\dots,n$,
+<ul>
+<li>For $j=1,&hellip;,n$,
+<ul>
+<li>$c_{ij} \mathrel{+}= \frac{1}{p_i} a_{ik}b_{kj}$.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Return $D := \frac{1}{S}C$.</li>
+</ol>
+<hr>
+<p>And from above, we have the following result:</p>
+<p><strong>Theorem.</strong> With probability at least $1-\delta$, the output $D$ of the algorithm above satisfies $\|D-AB\|_F &lt; 2\varepsilon\|A\|_F\|B\|_F$.</p>
+<h1 id="final-remarks">Final Remarks<a hidden class="anchor" aria-hidden="true" href="#final-remarks">#</a></h1>
+<p>Because each $w_k$ is computed in  $\mathcal{O}(n)$, the final algorithm has runtime $\mathcal{O}(\varepsilon^{-2}n^2\log\frac{1}{\delta})$. While on paper this might look nice, it is not very useful in practice: the  $\varepsilon^{-2}$ dooms the algorithm to produce low accuracy results, unless we increase the runtime significantly. This $\varepsilon^{-2}$ is present due to the central limit theorem, and in general cannot be avoided: such is the limitation of pretty much all sampling algorithms out there. Nonetheless, it is a good window into the myriad of possible cuts in runtime that randomization can being into matrix algorithms.</p>
+<p>I should remark at the end that at some point in the computations, I had deviated signifcantly from the references that I have been using. In particular, if there are any errors in the computations, it is solely my fault. Please contact me if you do spot any errors.</p>
+<h1 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h1>
+<p>Micheal Mahoney&rsquo;s Lecture Notes on Randomized Linear Algebra, over at <a href="https://arxiv.org/pdf/1608.04481">https://arxiv.org/pdf/1608.04481</a>.</p>
+<p>The Wikipedia page on McDoarmid&rsquo;s inequality, over at <a href="https://en.wikipedia.org/wiki/McDiarmid%27s_inequality">https://en.wikipedia.org/wiki/McDiarmid%27s_inequality</a>.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="http://localhost:1313/personalpage/posts/simple-rand-matmult/">
+    <span class="title">Next »</span>
+    <br>
+    <span>A Simple Randomized Matrix Multiplication Algorithm 1</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/personalpage/">Unsalvageable Proofs</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
